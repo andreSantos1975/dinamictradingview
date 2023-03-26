@@ -14,7 +14,6 @@ function App() {
     getCandle(symbol, interval)
       .then(data => {
         setData(data);
-        console.log("setData:", data); // adicionado log após a atribuição de data
         setIsLoading(false);
       })
       .catch(err => {
