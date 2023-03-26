@@ -8,23 +8,20 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [symbol, setSymbol] = useState('BTCUSDT');
   const [interval, setInterval] = useState('1m');
-  const [update, setUpdate] = useState(0); // novo estado para forçar atualização
+  const [update, setUpdate] = useState(false); // novo estado para forçar atualização
 
   useEffect(() => {
     getCandle(symbol, interval)
       .then(data => {
         setData(data);
-        console.log("setData:", data); // adicionado log após a atribuição de data
         setIsLoading(false);
       })
       .catch(err => {
         setIsLoading(false);
         alert(err.response ? err.response.data : err.message);
       });
-  }, [symbol, interval, update]);
-
-
-
+  }, [symbol, interval]);
+  
 
   function onSymbolChange(event) {
     setSymbol(event.target.value);
@@ -35,23 +32,21 @@ function App() {
     setInterval(event.target.value);
     setUpdate(!update); // adicionado para forçar atualização
   }
-
+  
 
   return (
     <div className="App">
-      <select onChange={onSymbolChange} value={symbol}>
-        <option value="BTCUSDT">BTCUSDT</option>
-        <option value="ETHUSDT">ETHUSDT</option>
-        <option value="ADAUSDT">ADAUSDT</option>
+      <select onChange={onSymbolChange}>
+        <option>BTCUSDT</option>
+        <option>ETHUSDT</option>
+        <option>ADAUSDT</option>
       </select>
-
-      <select onChange={onIntervalChange} value={interval}>
-        <option value="1m">1m</option>
-        <option value="1d">1d</option>
-        <option value="1w">1w</option>
+      <select onChange={onIntervalChange}>
+        <option>1m</option>
+        <option>1d</option>
+        <option>1w</option>
       </select>
-
-      {!isLoading && <ApexChart data={data} key={`${symbol}-${interval}-${update}`} />}
+      {!isLoading && <ApexChart data={data} />}
       {isLoading && <p>Loading...</p>}
     </div>
   );
