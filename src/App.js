@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getCandle } from './server/DataServer';
 import './App.css';
-import ApexChart from './Chart';
+
+import Chart from './Chart';
 
 function App() {
   const [data, setData] = useState([]);
@@ -22,9 +23,6 @@ function App() {
       });
   }, [symbol, interval, update]);
 
-
-
-
   function onSymbolChange(event) {
     setSymbol(event.target.value);
     setUpdate(!update); // atualiza 'update' para forçar atualização
@@ -34,7 +32,6 @@ function App() {
     setInterval(event.target.value);
     setUpdate(!update); // adicionado para forçar atualização
   }
-
 
   return (
     <div className="App">
@@ -50,10 +47,19 @@ function App() {
         <option value="1w">1w</option>
       </select>
 
-      {!isLoading && <ApexChart data={data} key={`${symbol}-${interval}-${update}`} />}
       {isLoading && <p>Loading...</p>}
+      {!isLoading && (
+        <Chart
+          symbol={`${symbol}USD`}
+          interval={interval}
+          autosize
+        />
+      )}
+
+
     </div>
   );
 }
 
 export default App;
+
